@@ -1,5 +1,5 @@
 "use client";
-import { performResetAction, resetRequestAction, resetVerifyAction } from "@/actions/authActions";
+import { auth_reset_perform, auth_reset_request, auth_reset_verify } from "@/actions/auth";
 import OTPField from "@/components/auth/OTPField";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,7 +38,7 @@ export default function Recovery() {
                         return;
                     }
 
-                    result = await resetRequestAction(email);
+                    result = await auth_reset_request(email);
                 }
 
                 if (state === "otp") {
@@ -47,7 +47,7 @@ export default function Recovery() {
                         return;
                     }
 
-                    result = await resetVerifyAction(email, otp);
+                    result = await auth_reset_verify(email, otp);
                 }
 
                 if (state === "password") {
@@ -66,7 +66,7 @@ export default function Recovery() {
                         return;
                     }
 
-                    result = await performResetAction(email, password, token);
+                    result = await auth_reset_perform(email, password, token);
                 }
 
                 if (result?.success) {

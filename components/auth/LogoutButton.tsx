@@ -1,6 +1,6 @@
 "use client";
 
-import { logoutAction } from "@/actions/authActions";
+import { auth_logout } from "@/actions/auth";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
@@ -11,7 +11,7 @@ export default function LogoutButton() {
 
     function handleClick() {
         startTransition(async () => {
-            const response = await logoutAction();
+            const response = await auth_logout();
 
             if (response.success) {
                 router.push("/");

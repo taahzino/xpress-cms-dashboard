@@ -4,7 +4,7 @@ import { signIn, signOut } from "@/lib/auth";
 import x_axios from "@/lib/axios";
 import { cookies } from "next/headers";
 
-export async function loginAction(email: string, password: string) {
+export async function auth_login(email: string, password: string) {
   try {
     const data = await signIn({ email, password });
 
@@ -36,7 +36,7 @@ export async function loginAction(email: string, password: string) {
   }
 }
 
-export async function logoutAction() {
+export async function auth_logout() {
   try {
     await signOut();
 
@@ -51,7 +51,7 @@ export async function logoutAction() {
   }
 }
 
-export async function resetRequestAction(email: string) {
+export async function auth_reset_request(email: string) {
   try {
     const response = await x_axios.post("/auth/people/reset/request", {
       email,
@@ -72,7 +72,7 @@ export async function resetRequestAction(email: string) {
   }
 }
 
-export async function resetVerifyAction(email: string, otp: string) {
+export async function auth_reset_verify(email: string, otp: string) {
   try {
     const response = await x_axios.post("/auth/people/reset/verify", {
       email,
@@ -94,7 +94,7 @@ export async function resetVerifyAction(email: string, otp: string) {
   }
 }
 
-export async function performResetAction(
+export async function auth_reset_perform(
   email: string,
   password: string,
   token: string

@@ -1,6 +1,6 @@
 "use client";
 
-import { loginAction } from "@/actions/authActions";
+import { auth_login } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,7 +18,7 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     startTransition(async () => {
-      const response = await loginAction(email, password);
+      const response = await auth_login(email, password);
 
       if (response.success) {
         router.push("/dashboard");
