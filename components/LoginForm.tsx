@@ -28,7 +28,7 @@ export default function LoginForm() {
     };
 
     return (
-        <div className="w-full lg:grid lg:grid-cols-2 lg:min-h-screen">
+        <div className="w-full lg:min-h-screen flex items-center justify-center">
             <div className="flex items-center justify-center py-12 h-full">
                 <form className="mx-auto grid w-[350px] gap-6" onSubmit={handleSubmit}>
                     <div className="grid gap-2 text-center">
@@ -56,6 +56,7 @@ export default function LoginForm() {
                                 id="password"
                                 type="password"
                                 value={password}
+                                placeholder="********"
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
@@ -65,11 +66,6 @@ export default function LoginForm() {
                         </Button>
                     </div>
                 </form>
-            </div>
-            <div className="hidden lg:block h-full">
-                <div className="text-xl bg-[#3e3e3e] h-full flex items-center justify-center text-center">
-                    I love logging in... said no one ever 😂
-                </div>
             </div>
         </div>
     );
