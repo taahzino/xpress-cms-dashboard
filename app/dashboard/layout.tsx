@@ -6,6 +6,7 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 
+import LogoutButton from "@/components/auth/LogoutButton"
 import { DesktopMenus, MobileMenus } from "@/components/layout/Menus"
 import { Button } from "@/components/ui/button"
 import {
@@ -71,7 +72,7 @@ export default function AuthenticatedLayout({ children }: {
                             <DropdownMenuItem>Settings</DropdownMenuItem>
                             <DropdownMenuItem>Support</DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem>Logout</DropdownMenuItem>
+                            <LogoutButton />
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </header>

@@ -43,6 +43,9 @@ export async function middleware(req: NextRequest) {
 
       return response;
     } else {
+      req.cookies.delete("jwt");
+      req.cookies.delete("profile");
+
       return NextResponse.redirect(new URL("/", req.url));
     }
   } catch (error) {

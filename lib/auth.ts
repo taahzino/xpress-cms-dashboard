@@ -1,4 +1,4 @@
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 
 export async function signIn({
   email,
@@ -27,6 +27,29 @@ export async function signIn({
   return {
     success: true,
     user: data.data,
+  };
+}
+
+export async function signOut() {
+  const token = cookies().get("jwt")?.value;
+
+  const response = await fetch(process.env.API_URL + "/auth/people/logout", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    return {
+      success: false,
+      error: "Failed to logout",
+    };
+  }
+
+  return {
+    success: true,
   };
 }
 

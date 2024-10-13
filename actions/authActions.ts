@@ -1,6 +1,6 @@
 "use server";
 
-import { signIn } from "@/lib/auth";
+import { signIn, signOut } from "@/lib/auth";
 import { cookies } from "next/headers";
 
 export async function loginAction(email: string, password: string) {
@@ -32,5 +32,20 @@ export async function loginAction(email: string, password: string) {
     return { success: false, error: "Invalid email or password" };
   } catch (error) {
     return { success: false, error: "Login failed" };
+  }
+}
+
+export async function logoutAction() {
+  try {
+    await signOut();
+
+    cookies().delete("jwt");
+    cookies().delete("profile");
+
+    return { success: true };
+  } catch (error) {
+    console.log("Logout failed:", error);
+
+    return { success: false, error: "Logout failed" };
   }
 }
