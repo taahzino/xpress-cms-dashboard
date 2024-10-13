@@ -14,8 +14,17 @@ export async function loginAction(email: string, password: string) {
         httpOnly: true,
         path: "/",
         secure: process.env.NODE_ENV === "production",
-        maxAge: 60 * 60 * 24,
+        maxAge: 60 * 60 * 24 * 7,
       });
+
+      if (data?.user?.profile) {
+        cookies().set("profile", JSON.stringify(data.user.profile), {
+          httpOnly: true,
+          path: "/",
+          secure: process.env.NODE_ENV === "production",
+          maxAge: 60 * 60 * 24 * 7,
+        });
+      }
 
       return { success: true, user: data.user };
     }

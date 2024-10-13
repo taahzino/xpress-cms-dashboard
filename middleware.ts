@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { checkPermission } from "./lib/auth";
 
 export async function middleware(req: NextRequest) {
   const token = req.cookies.get("jwt")?.value;
@@ -24,7 +25,23 @@ export async function middleware(req: NextRequest) {
       if (pathname === "/") {
         return NextResponse.redirect(new URL("/dashboard", req.url));
       }
-      return NextResponse.next();
+
+      const response = NextResponse.next();
+
+      const data = await apiResponse.json();
+
+      if (data?.data?.profile) {
+        response.headers.set("x-profile", JSON.stringify(data.data.profile));
+      }
+
+      if (
+        pathname === "/dashboard/users" &&
+        !checkPermission(["manage-users"], data.data.profile)
+      ) {
+        return NextResponse.redirect(new URL("/dashboard", req.url));
+      }
+
+      return response;
     } else {
       return NextResponse.redirect(new URL("/", req.url));
     }
