@@ -1,44 +1,53 @@
 "use server";
 
-import { signIn, signOut } from "@/lib/auth";
 import x_axios from "@/lib/axios";
 import { cookies } from "next/headers";
 
 export async function auth_login(email: string, password: string) {
   try {
-    const data = await signIn({ email, password });
+    const response = await x_axios.post("/auth/people/login", {
+      email,
+      password,
+    });
 
-    if (data.user) {
-      const token = data.user.token;
+    const data = response.data.data;
 
-      cookies().set("jwt", token, {
+    if (data) {
+      cookies().set("jwt", data.token, {
         httpOnly: true,
         path: "/",
         secure: process.env.NODE_ENV === "production",
         maxAge: 60 * 60 * 24 * 7,
       });
 
-      if (data?.user?.profile) {
-        cookies().set("profile", JSON.stringify(data.user.profile), {
-          httpOnly: true,
-          path: "/",
-          secure: process.env.NODE_ENV === "production",
-          maxAge: 60 * 60 * 24 * 7,
-        });
-      }
+      cookies().set("profile", JSON.stringify(data.profile), {
+        httpOnly: true,
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 60 * 60 * 24 * 7,
+      });
 
-      return { success: true, user: data.user };
+      return { success: true, data };
     }
 
-    return { success: false, error: "Invalid email or password" };
+    return { success: true, data: response.data };
   } catch (error) {
-    return { success: false, error: "Login failed" };
+    if (error.response?.data?.errors) {
+      return {
+        success: false,
+        error: error.response.data.errors[0].message,
+      };
+    } else if (error.response?.data?.message) {
+      return { success: false, error: error.response.data.message };
+    } else {
+      return { success: false, error: "An error occurred" };
+    }
   }
 }
 
 export async function auth_logout() {
   try {
-    await signOut();
+    await x_axios.post("/auth/people/logout");
 
     cookies().delete("jwt");
     cookies().delete("profile");
