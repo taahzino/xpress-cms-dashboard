@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
 import { Rubik } from 'next/font/google';
 import "./globals.css";
@@ -23,6 +24,7 @@ export default function RootLayout({
         className={`${rubik.className} antialiased dark`}
       >
         {children}
+        <Toaster />
       </body>
     </html>
   );

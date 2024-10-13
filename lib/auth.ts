@@ -1,4 +1,5 @@
-import { cookies, headers } from "next/headers";
+import { headers } from "next/headers";
+import x_axios from "./axios";
 
 export async function signIn({
   email,
@@ -31,26 +32,18 @@ export async function signIn({
 }
 
 export async function signOut() {
-  const token = cookies().get("jwt")?.value;
+  try {
+    const response = await x_axios.post("/auth/people/logout");
 
-  const response = await fetch(process.env.API_URL + "/auth/people/logout", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
+    console.log(response.data);
 
-  if (!response.ok) {
+    return response.data;
+  } catch (error) {
     return {
       success: false,
       error: "Failed to logout",
     };
   }
-
-  return {
-    success: true,
-  };
 }
 
 export function checkPermission(

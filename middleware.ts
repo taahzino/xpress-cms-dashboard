@@ -22,7 +22,7 @@ export async function middleware(req: NextRequest) {
     });
 
     if (apiResponse.ok) {
-      if (pathname === "/") {
+      if (!pathname.startsWith("/dashboard")) {
         return NextResponse.redirect(new URL("/dashboard", req.url));
       }
 
@@ -55,5 +55,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/"],
+  matcher: ["/dashboard/:path*", "/", "/recovery"],
 };
